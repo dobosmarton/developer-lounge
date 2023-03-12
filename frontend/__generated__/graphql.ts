@@ -36,21 +36,11 @@ export type MutationRootCreateRepositoryArgs = {
   input: RepositoryInput;
 };
 
-/** Owner entity */
-export type Owner = {
-  __typename?: 'Owner';
-  avatarUrl: Scalars['String'];
-  email?: Maybe<Scalars['String']>;
-  id: Scalars['Int'];
-  name?: Maybe<Scalars['String']>;
-  url: Scalars['String'];
-};
-
 export type QueryRoot = {
   __typename?: 'QueryRoot';
   getLoginUrl: LoginUrlResult;
   getToken: TokenResult;
-  repositories?: Maybe<Array<Repository>>;
+  repositories: Array<Repository>;
 };
 
 
@@ -63,7 +53,6 @@ export type QueryRootRepositoriesArgs = {
   input: ListRepositoryInput;
 };
 
-/** Repository entity */
 export type Repository = {
   __typename?: 'Repository';
   description?: Maybe<Scalars['String']>;
@@ -71,9 +60,8 @@ export type Repository = {
   htmlUrl: Scalars['String'];
   id: Scalars['Int'];
   name?: Maybe<Scalars['String']>;
-  owner: Owner;
   private: Scalars['Boolean'];
-  url: Scalars['String'];
+  user: User;
 };
 
 /** Repository Input */
@@ -103,6 +91,16 @@ export type TokenResult = {
   token: Scalars['String'];
 };
 
+/** User entity */
+export type User = {
+  __typename?: 'User';
+  avatarUrl: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  name?: Maybe<Scalars['String']>;
+  url: Scalars['String'];
+};
+
 export type GetLoginUrlQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -115,14 +113,14 @@ export type GetAccessTokenQueryVariables = Exact<{
 
 export type GetAccessTokenQuery = { __typename?: 'QueryRoot', getToken: { __typename?: 'TokenResult', token: string } };
 
-export type RepositoryFragment = { __typename?: 'Repository', id: number, name?: string | null, fullName: string, private: boolean, description?: string | null, htmlUrl: string, owner: { __typename?: 'Owner', avatarUrl: string, name?: string | null, email?: string | null } } & { ' $fragmentName'?: 'RepositoryFragment' };
+export type RepositoryFragment = { __typename?: 'Repository', id: number, name?: string | null, fullName: string, private: boolean, description?: string | null, htmlUrl: string, user: { __typename?: 'User', avatarUrl: string, name?: string | null, email?: string | null } } & { ' $fragmentName'?: 'RepositoryFragment' };
 
 export type RepositoriesQueryVariables = Exact<{
   input: ListRepositoryInput;
 }>;
 
 
-export type RepositoriesQuery = { __typename?: 'QueryRoot', repositories?: Array<{ __typename?: 'Repository', id: number, name?: string | null, fullName: string, private: boolean, description?: string | null, htmlUrl: string, owner: { __typename?: 'Owner', avatarUrl: string, name?: string | null, email?: string | null } }> | null };
+export type RepositoriesQuery = { __typename?: 'QueryRoot', repositories: Array<{ __typename?: 'Repository', id: number, name?: string | null, fullName: string, private: boolean, description?: string | null, htmlUrl: string, user: { __typename?: 'User', avatarUrl: string, name?: string | null, email?: string | null } }> };
 
 export type CreateRepositoryMutationVariables = Exact<{
   input: RepositoryInput;
@@ -131,8 +129,8 @@ export type CreateRepositoryMutationVariables = Exact<{
 
 export type CreateRepositoryMutation = { __typename?: 'MutationRoot', createRepository: { __typename?: 'Repository', id: number } };
 
-export const RepositoryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Repository"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Repository"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"private"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"htmlUrl"}},{"kind":"Field","name":{"kind":"Name","value":"owner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<RepositoryFragment, unknown>;
+export const RepositoryFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Repository"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Repository"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"private"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"htmlUrl"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<RepositoryFragment, unknown>;
 export const GetLoginUrlDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getLoginUrl"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getLoginUrl"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]} as unknown as DocumentNode<GetLoginUrlQuery, GetLoginUrlQueryVariables>;
 export const GetAccessTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAccessToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TokenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}}]}}]}}]} as unknown as DocumentNode<GetAccessTokenQuery, GetAccessTokenQueryVariables>;
-export const RepositoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"repositories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ListRepositoryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repositories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"private"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"htmlUrl"}},{"kind":"Field","name":{"kind":"Name","value":"owner"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<RepositoriesQuery, RepositoriesQueryVariables>;
+export const RepositoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"repositories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ListRepositoryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repositories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"private"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"htmlUrl"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<RepositoriesQuery, RepositoriesQueryVariables>;
 export const CreateRepositoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRepository"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RepositoryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRepository"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRepositoryMutation, CreateRepositoryMutationVariables>;

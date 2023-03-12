@@ -17,13 +17,13 @@ export const useRepositories: UseAccessToken = () => {
   const { token } = useGithubState();
   const [currentPage, setCurrentPage] = useState(1);
 
-  console.log('currentPage', currentPage, token);
-
   const { loading, data } = useQuery(REPOSITORIES, {
     context: { headers: { authorization: `Bearer ${token}` } },
     variables: { input: { page: currentPage, sort: RepositorySort.FullName } },
     skip: !token,
   });
+
+  console.log('currentPage', currentPage, data);
 
   const onNextPage = () => setCurrentPage((page) => page + 1);
 

@@ -44,24 +44,49 @@ pub struct RepositoryOwner {
     pub id: i32,
 }
 
-#[derive(GraphQLObject, Debug, Serialize, Deserialize)]
-#[graphql(description = "Repository entity")]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Repository {
-    pub id: i32,
-    pub name: Option<String>,
-    pub full_name: String,
-    pub private: bool,
-    pub description: Option<String>,
-    pub url: String,
-    pub html_url: String,
+    id: i32,
+    name: Option<String>,
+    full_name: String,
+    private: bool,
+    description: Option<String>,
+    html_url: String,
 
-    #[graphql(skip)]
     owner: RepositoryOwner,
+    url: String,
+    // #[graphql(skip)]
+    // owner: RepositoryOwner,
 }
 
+#[juniper::graphql_object(context = Context)]
 impl Repository {
-    pub async fn user(&self, context: &Context) -> FieldResult<User> {
+    async fn user(&self, context: &Context) -> FieldResult<User> {
         Ok(get_user_by_id(&context.token, &self.owner.id.to_string()).await?)
+    }
+
+    fn id(&self) -> i32 {
+        self.id
+    }
+
+    fn name(&self) -> &Option<String> {
+        &self.name
+    }
+
+    fn full_name(&self) -> &str {
+        &self.full_name
+    }
+
+    fn private(&self) -> &bool {
+        &self.private
+    }
+
+    fn description(&self) -> &Option<String> {
+        &self.description
+    }
+
+    fn html_url(&self) -> &str {
+        &self.html_url
     }
 }
 

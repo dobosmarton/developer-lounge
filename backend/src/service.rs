@@ -161,7 +161,7 @@ pub mod github_service {
                         .unwrap_or(schema::RepositorySort::FullName)
                         .to_string(),
                 ),
-                ("affiliation", "owner".to_string()),
+                // ("affiliation", "owner".to_string()),
             ],
         )
         .await
@@ -188,11 +188,7 @@ pub mod github_service {
             return Err("Authentication is required!".into());
         }
 
-        request::get::<schema::User, Vec<()>>(
-            &format!("{}/{}", "user", user_id),
-            token,
-            &Vec::new(),
-        )
-        .await
+        request::get::<schema::User, Vec<()>>(&format!("/user/{}", user_id), token, &Vec::new())
+            .await
     }
 }
