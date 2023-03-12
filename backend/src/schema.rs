@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::service::github_service::{
     create_repository, get_access_token, get_login_url, get_user_by_id, repositories,
+    search_repositories,
 };
 
 pub struct Context {
@@ -34,9 +35,13 @@ impl fmt::Display for RepositorySort {
 pub struct User {
     pub id: i32,
     pub avatar_url: String,
+
+    #[graphql(skip)]
     pub url: String,
+
     pub name: Option<String>,
     pub email: Option<String>,
+    pub login: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -55,8 +60,6 @@ pub struct Repository {
 
     owner: RepositoryOwner,
     url: String,
-    // #[graphql(skip)]
-    // owner: RepositoryOwner,
 }
 
 #[juniper::graphql_object(context = Context)]
@@ -91,6 +94,13 @@ impl Repository {
 }
 
 #[derive(GraphQLObject, Debug, Serialize, Deserialize)]
+#[graphql(description = "Repository search result", context = Context)]
+pub struct RepositorySearchResult {
+    pub total_count: i32,
+    pub items: Vec<Repository>,
+}
+
+#[derive(GraphQLObject, Debug, Serialize, Deserialize)]
 #[graphql(description = "Token result")]
 pub struct TokenResult {
     token: String,
@@ -107,6 +117,13 @@ pub struct TokenInput {
 pub struct ListRepositoryInput {
     pub page: Option<i32>,
     pub sort: Option<RepositorySort>,
+}
+
+#[derive(GraphQLInputObject, Debug, Serialize, Deserialize)]
+#[graphql(description = "Search Repository input")]
+pub struct SearchRepositoryInput {
+    pub page: Option<i32>,
+    pub search_term: String,
 }
 
 #[derive(GraphQLInputObject, Debug, Serialize, Deserialize)]
@@ -145,6 +162,14 @@ impl QueryRoot {
         input: ListRepositoryInput,
     ) -> FieldResult<Vec<Repository>> {
         let repository_list = repositories(&context.token, input).await?;
+        Ok(repository_list)
+    }
+
+    async fn search_repositories(
+        context: &Context,
+        input: SearchRepositoryInput,
+    ) -> FieldResult<RepositorySearchResult> {
+        let repository_list = search_repositories(&context.token, input).await?;
         Ok(repository_list)
     }
 }

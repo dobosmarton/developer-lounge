@@ -50,6 +50,26 @@ export const REPOSITORIES = gql(/* GraphQL */ `
   }
 `);
 
+export const SEARCH_REPOSITORIES = gql(/* GraphQL */ `
+  query searchRepositories($input: SearchRepositoryInput!) {
+    searchRepositories(input: $input) {
+      items {
+        id
+        name
+        fullName
+        private
+        description
+        htmlUrl
+        user {
+          avatarUrl
+          name
+          email
+        }
+      }
+    }
+  }
+`);
+
 export const CREATE_REPOSITORY = gql(/* GraphQL */ `
   mutation createRepository($input: RepositoryInput!) {
     createRepository(input: $input) {

@@ -167,6 +167,30 @@ pub mod github_service {
         .await
     }
 
+    pub async fn search_repositories(
+        token: &str,
+        input: schema::SearchRepositoryInput,
+    ) -> Result<schema::RepositorySearchResult, Box<dyn std::error::Error>> {
+        if token.is_empty() {
+            return Err("Authentication is required!".into());
+        }
+
+        let user = get_user(token).await.unwrap();
+
+        request::get(
+            &"/search/repositories",
+            token,
+            &[
+                ("page", input.page.unwrap_or(1).to_string()),
+                (
+                    "q",
+                    format!("{} in:name user:{}", input.search_term, user.login),
+                ),
+            ],
+        )
+        .await
+    }
+
     pub async fn create_repository(
         token: &str,
         repository_input: schema::RepositoryInput,
@@ -178,6 +202,14 @@ pub mod github_service {
         let response = request::post("/user/repos", token, &repository_input).await;
 
         Ok(response.unwrap())
+    }
+
+    pub async fn get_user(token: &str) -> Result<schema::User, Box<dyn std::error::Error>> {
+        if token.is_empty() {
+            return Err("Authentication is required!".into());
+        }
+
+        request::get::<schema::User, Vec<()>>(&"/user", token, &Vec::new()).await
     }
 
     pub async fn get_user_by_id(

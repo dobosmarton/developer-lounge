@@ -41,6 +41,7 @@ export type QueryRoot = {
   getLoginUrl: LoginUrlResult;
   getToken: TokenResult;
   repositories: Array<Repository>;
+  searchRepositories: RepositorySearchResult;
 };
 
 
@@ -51,6 +52,11 @@ export type QueryRootGetTokenArgs = {
 
 export type QueryRootRepositoriesArgs = {
   input: ListRepositoryInput;
+};
+
+
+export type QueryRootSearchRepositoriesArgs = {
+  input: SearchRepositoryInput;
 };
 
 export type Repository = {
@@ -73,12 +79,25 @@ export type RepositoryInput = {
   private: Scalars['Boolean'];
 };
 
+/** Repository search result */
+export type RepositorySearchResult = {
+  __typename?: 'RepositorySearchResult';
+  items: Array<Repository>;
+  totalCount: Scalars['Int'];
+};
+
 export enum RepositorySort {
   Created = 'CREATED',
   FullName = 'FULL_NAME',
   Pushed = 'PUSHED',
   Updated = 'UPDATED'
 }
+
+/** Search Repository input */
+export type SearchRepositoryInput = {
+  page?: InputMaybe<Scalars['Int']>;
+  searchTerm: Scalars['String'];
+};
 
 /** Token input */
 export type TokenInput = {
@@ -97,8 +116,8 @@ export type User = {
   avatarUrl: Scalars['String'];
   email?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  login: Scalars['String'];
   name?: Maybe<Scalars['String']>;
-  url: Scalars['String'];
 };
 
 export type GetLoginUrlQueryVariables = Exact<{ [key: string]: never; }>;
@@ -122,6 +141,13 @@ export type RepositoriesQueryVariables = Exact<{
 
 export type RepositoriesQuery = { __typename?: 'QueryRoot', repositories: Array<{ __typename?: 'Repository', id: number, name?: string | null, fullName: string, private: boolean, description?: string | null, htmlUrl: string, user: { __typename?: 'User', avatarUrl: string, name?: string | null, email?: string | null } }> };
 
+export type SearchRepositoriesQueryVariables = Exact<{
+  input: SearchRepositoryInput;
+}>;
+
+
+export type SearchRepositoriesQuery = { __typename?: 'QueryRoot', searchRepositories: { __typename?: 'RepositorySearchResult', items: Array<{ __typename?: 'Repository', id: number, name?: string | null, fullName: string, private: boolean, description?: string | null, htmlUrl: string, user: { __typename?: 'User', avatarUrl: string, name?: string | null, email?: string | null } }> } };
+
 export type CreateRepositoryMutationVariables = Exact<{
   input: RepositoryInput;
 }>;
@@ -133,4 +159,5 @@ export const RepositoryFragmentDoc = {"kind":"Document","definitions":[{"kind":"
 export const GetLoginUrlDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getLoginUrl"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getLoginUrl"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]} as unknown as DocumentNode<GetLoginUrlQuery, GetLoginUrlQueryVariables>;
 export const GetAccessTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAccessToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TokenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}}]}}]}}]} as unknown as DocumentNode<GetAccessTokenQuery, GetAccessTokenQueryVariables>;
 export const RepositoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"repositories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ListRepositoryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repositories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"private"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"htmlUrl"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<RepositoriesQuery, RepositoriesQueryVariables>;
+export const SearchRepositoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"searchRepositories"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SearchRepositoryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchRepositories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"fullName"}},{"kind":"Field","name":{"kind":"Name","value":"private"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"htmlUrl"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]}}]} as unknown as DocumentNode<SearchRepositoriesQuery, SearchRepositoriesQueryVariables>;
 export const CreateRepositoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRepository"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RepositoryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRepository"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateRepositoryMutation, CreateRepositoryMutationVariables>;
