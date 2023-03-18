@@ -31,7 +31,6 @@ pub async fn get_user_by_ids(
     user_loader_data: Vec<UserLoaderData>,
 ) -> &mut HashMap<UserLoaderData, User> {
     for loader_data in user_loader_data {
-        println!("get_user_by_ids {}", loader_data.id);
         let user = request::get::<User, Vec<()>>(
             &format!("/user/{}", loader_data.id),
             &loader_data.token,

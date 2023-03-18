@@ -28,8 +28,6 @@ impl UserService {
             return Err("Authentication is required!".into());
         }
 
-        println!("get_user {}", user_id);
-
         Ok(self
             .get_user_by_id
             .load(UserLoaderData {
