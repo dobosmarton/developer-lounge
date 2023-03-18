@@ -17,6 +17,7 @@ export type Scalars = {
 /** Repository list input */
 export type ListRepositoryInput = {
   page?: InputMaybe<Scalars['Int']>;
+  perPage?: InputMaybe<Scalars['Int']>;
   sort?: InputMaybe<RepositorySort>;
 };
 
@@ -96,6 +97,7 @@ export enum RepositorySort {
 /** Search Repository input */
 export type SearchRepositoryInput = {
   page?: InputMaybe<Scalars['Int']>;
+  perPage?: InputMaybe<Scalars['Int']>;
   searchTerm: Scalars['String'];
 };
 
