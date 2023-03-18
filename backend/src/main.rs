@@ -3,12 +3,13 @@ use std::sync::Arc;
 use actix_cors::Cors;
 use actix_web::{web::Data, App, HttpServer};
 use config::Config;
-use schema::create_schema;
+use graphql::schema::create_schema;
 
 mod config;
+mod graphql;
 mod routes;
-mod schema;
-mod service;
+mod services;
+mod type_defs;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
