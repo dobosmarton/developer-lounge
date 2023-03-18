@@ -13,17 +13,18 @@ type UseAccessToken = () => Pick<QueryResult<RepositoriesQuery, RepositoriesQuer
 
 export const useRepositories: UseAccessToken = () => {
   const { token } = useGithubState();
-  const { currentPage, onNextPage, onPrevPage } = usePager();
+  const { itemPerPage, currentPage, onNextPage, onPrevPage } = usePager();
 
   const { loading, data } = useQuery(REPOSITORIES, {
     context: { headers: { authorization: `Bearer ${token}` } },
-    variables: { input: { page: currentPage, sort: RepositorySort.FullName } },
+    variables: { input: { page: currentPage, perPage: itemPerPage, sort: RepositorySort.FullName } },
     skip: !token,
   });
 
   return {
     list: data?.repositories ?? [],
     loading,
+    itemPerPage,
     currentPage,
     onNextPage,
     onPrevPage,

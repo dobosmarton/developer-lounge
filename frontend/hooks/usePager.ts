@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 export type PagerProps = {
+  itemPerPage: number;
   currentPage: number;
   onNextPage: () => void;
   onPrevPage: () => void;
@@ -16,6 +17,7 @@ export const usePager: UsePagerHook = () => {
   const onPrevPage = () => setCurrentPage((page) => (page > 1 ? page - 1 : page));
 
   return {
+    itemPerPage: 12,
     currentPage,
     onNextPage,
     onPrevPage,
