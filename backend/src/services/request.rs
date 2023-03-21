@@ -43,8 +43,8 @@ pub mod request {
         query: &Q,
     ) -> Result<T, Box<dyn std::error::Error>>
     where
-        for<'a> T: Deserialize<'a>,
         Q: Serialize,
+        for<'a> T: Deserialize<'a>,
     {
         let github_api_url = Config::get_config().github_api_url;
 
