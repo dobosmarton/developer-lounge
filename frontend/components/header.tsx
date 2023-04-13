@@ -2,11 +2,11 @@
 
 type Props = {
   isLoggedIn: boolean;
-  loginHref: string;
+  onLogin: () => void;
   onLogout: () => void;
 };
 
-export const Header: React.FunctionComponent<Props> = ({ loginHref, isLoggedIn, onLogout }) => {
+export const Header: React.FunctionComponent<Props> = ({ onLogin, isLoggedIn, onLogout }) => {
   return (
     <header className="bg-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -15,12 +15,11 @@ export const Header: React.FunctionComponent<Props> = ({ loginHref, isLoggedIn, 
             <span className="text-xl font-black uppercase tracking-wide">Developer Lounge</span>
           </a>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12"></div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="flex flex-1 justify-end">
           {!isLoggedIn && (
-            <a href={loginHref} className="text-sm font-semibold leading-6 text-gray-900">
+            <button onClick={onLogin} className="text-sm font-semibold leading-6 text-gray-900">
               Log in <span aria-hidden="true">&rarr;</span>
-            </a>
+            </button>
           )}
           {isLoggedIn && (
             <button onClick={onLogout} className="text-sm font-semibold leading-6 text-gray-900">

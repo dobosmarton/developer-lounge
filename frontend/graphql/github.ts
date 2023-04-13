@@ -1,13 +1,5 @@
 import { gql } from '@/__generated__';
 
-export const GET_LOGIN_URL = gql(/* GraphQL */ `
-  query getLoginUrl {
-    getLoginUrl {
-      url
-    }
-  }
-`);
-
 export const GET_ACCESS_TOKEN = gql(/* GraphQL */ `
   query getAccessToken($input: TokenInput!) {
     getToken(input: $input) {

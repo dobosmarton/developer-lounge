@@ -1,6 +1,5 @@
 'use client';
 
-import { useAccessTokenQuery } from '@/hooks/useAccessTokenQuery';
 import { useGithubState } from './github.provider';
 import { RepositoryHome } from './repositoryHome';
 
@@ -9,9 +8,7 @@ type Props = {
 };
 
 export default function Home(props: Props) {
-  useAccessTokenQuery(props.searchParams.code);
+  const { hasSession } = useGithubState();
 
-  const { token } = useGithubState();
-
-  return <main>{token && <RepositoryHome />}</main>;
+  return <main>{hasSession && <RepositoryHome />}</main>;
 }

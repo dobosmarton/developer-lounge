@@ -13,13 +13,13 @@ type UseAccessToken = () => Pick<MutationResult<CreateRepositoryMutation>, 'load
 };
 
 export const useCreateRepositoryMutation: UseAccessToken = () => {
-  const { token } = useGithubState();
+  const { hasSession, token } = useGithubState();
   const [isModalOpen, setModalOpen] = useState(false);
 
   const [_createRepository, { loading }] = useMutation(CREATE_REPOSITORY);
 
   const createRepository = async (repositoryInput: RepositoryInput) => {
-    if (!token) {
+    if (!hasSession) {
       throw new Error('Requires authentication!');
     }
 

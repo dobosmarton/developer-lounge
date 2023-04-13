@@ -1,10 +1,15 @@
 'use client';
 
-import React, { createContext, useContext, PropsWithChildren, useState, useEffect } from 'react';
+import React, { createContext, useContext, PropsWithChildren } from 'react';
+import { useSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
+type ExtendedSession = Session & {
+  accessToken: string | null;
+};
 export interface GithubContext {
-  token: string | null;
-  saveToken: (token: string | null) => void;
+  hasSession: boolean;
+  token: string | null | undefined;
 }
 
 // Ignoring missing initialValue, because there's always a provider and value is provided
@@ -19,23 +24,12 @@ export type GithubProviderProps = {
 };
 
 export const GithubProvider = ({ children }: PropsWithChildren<GithubProviderProps>) => {
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    setToken(localStorage.getItem('token'));
-  }, []);
-
-  const saveToken = (token: string | null) => {
-    setToken(token);
-    if (!token) {
-      return localStorage.removeItem('token');
-    }
-    return localStorage.setItem('token', token);
-  };
+  const sessionData = useSession();
+  const session = sessionData.data as ExtendedSession | null;
 
   const state = {
-    token,
-    saveToken,
+    hasSession: !!session?.user,
+    token: session?.accessToken,
   };
 
   return <GithubState.Provider value={state}>{children}</GithubState.Provider>;

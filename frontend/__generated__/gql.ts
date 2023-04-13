@@ -13,7 +13,6 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query getLoginUrl {\n    getLoginUrl {\n      url\n    }\n  }\n": types.GetLoginUrlDocument,
     "\n  query getAccessToken($input: TokenInput!) {\n    getToken(input: $input) {\n      token\n    }\n  }\n": types.GetAccessTokenDocument,
     "\n  fragment Repository on Repository {\n    id\n    name\n    fullName\n    private\n    description\n    htmlUrl\n    user {\n      avatarUrl\n      name\n      email\n    }\n  }\n": types.RepositoryFragmentDoc,
     "\n  query repositories($input: ListRepositoryInput!) {\n    repositories(input: $input) {\n      id\n      name\n      fullName\n      private\n      description\n      htmlUrl\n      user {\n        avatarUrl\n        name\n        email\n      }\n    }\n  }\n": types.RepositoriesDocument,
@@ -35,10 +34,6 @@ const documents = {
  */
 export function gql(source: string): unknown;
 
-/**
- * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function gql(source: "\n  query getLoginUrl {\n    getLoginUrl {\n      url\n    }\n  }\n"): (typeof documents)["\n  query getLoginUrl {\n    getLoginUrl {\n      url\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
